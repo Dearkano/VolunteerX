@@ -2,8 +2,8 @@
   "engines": {
     "composer": "^0.20.0"
   },
-  "name": "iot-perishable-network",
-  "version": "0.2.6",
+  "name": "volunteerx-network",
+  "version": "0.1.0",
   "description": "IoT Shipping Perishable Goods Business Network",
   "networkImage": "https://hyperledger.github.io/composer-sample-networks/packages/perishable-network/networkimage.svg",
   "networkImageanimated": "https://hyperledger.github.io/composer-sample-networks/packages/perishable-network/networkimageanimated.svg",
