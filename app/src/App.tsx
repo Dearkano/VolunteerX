@@ -28,8 +28,7 @@ function App() {
         sidebar={sidebar}
         open={open}
         onOpenChange={onOpenChange}
-      >
-      </Drawer>
+      />
     </div>);
 }
 
