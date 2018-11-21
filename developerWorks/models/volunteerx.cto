@@ -1,0 +1,182 @@
+/**
+ * @Author: 田子珺
+ * @Date: 2018/11/21
+ * @description VolunteerX 一个去中心化的志愿者捐赠服务一体化公益平台
+ * @email vaynetian@gmail.com
+ */
+namespace org.volunteerx.network
+
+enum Status {
+  o underway
+  o finished
+  o abort
+}
+
+abstract asset Project identified by id {
+  o String id
+  // 项目标题
+  o String title
+  // 项目简介
+  o String description
+  // 项目发行公益组织
+  --> Commonweal issuer
+  // 截止时间
+  o DateTime deadline
+  // 项目状态
+  o Status status
+}
+/**
+ * 公益活动
+ */
+asset CharityWork extends Project {
+  // 捐献项目类型
+  o String type
+  // 目标捐赠金额
+  o Double targetBalance
+  // 已获得的投票数
+  o Double receivedVoteToken
+  // 参与投票的志愿者
+  o String volunteers
+  // 受捐献人
+  o String beneficiary
+}
+
+ /**
+ * 志愿者活动 
+ */
+asset VolunteerWork extends Project  {
+  // 项目参与最大人数
+  o Integer maxParticipants
+  // 项目奖励投票权数
+  o Double award
+  // 报名参与的志愿者
+  o String[] volunteers
+  // 已获得确权的志愿者
+  o String[] confirmedVolunteers
+  // 未获得确权的志愿者
+  o String[] unConfirmedVolunteers
+}
+
+/**
+ * 公益资金池
+ */
+asset TokenPool identified by type {
+  o String type
+  o Double balance
+}
+
+/**
+ * 所有的参与者的基类
+ */
+abstract participant User identified by id {
+  o String id
+  o String name
+  o Double balance
+  o String password
+}
+
+/**
+ * 志愿者
+ */
+participant Volunteer extends User {
+  // 投票权余额
+  o Double voteTokenBalance
+  // 实名制 身份证号
+  o String IDCard
+  // 参与并完成的志愿者项目
+  o String[] finishedVolunteerWorks
+  // 报名还未参与或未能被确认的志愿者项目
+  o String[] unFinishedVolunteerWorks
+  // 参与投票的捐赠项目
+  o String[] myCharityWorks
+}
+
+/**
+ * 公益组织
+ */
+participant Commonweal extends User {
+  // 公益组织发布的志愿者项目
+  o String[] myVolunteerWorks
+  // 公益组织发布的捐赠项目
+  o String[] myCharityWorks
+}
+
+/**
+ * 银行
+ */
+participant Bank extends User {
+  o Double issuedToken
+}
+
+/**
+ * 受捐献人
+ */
+participant Beneficiary extends User {
+  // 实名制 身份证号
+  o String IDCard
+}
+
+/**
+ * 捐赠人
+ */
+participant Donor extends User {
+  // 实名制 身份证号
+  o String IDCard
+}
+
+/**
+ * 发布志愿者项目
+ */
+transaction issueVolunteerWork {
+  --> VolunteerWork project
+}
+
+/**
+ * 发布捐赠项目
+ */
+transaction issueCharityWork {
+  --> CharityWork project
+}
+
+/**
+ * 志愿者报名参与项目
+ */
+transaction applyForVolunteerWork {
+  o String volunteerId
+  o String projectId
+}
+
+/**
+ * 公益组织确权完成参与
+ */
+transaction authorizeToken {
+  o String volunteerId
+  o String commonwealId
+  o String projectId
+}
+
+/**
+ * 志愿者参与投票
+ */
+transaction vote {
+  o String volunteerId
+  o String projectId
+  o Double balance
+}
+
+/**
+ *  代币发行
+ */
+transaction tokenIssue {
+  o String bankId
+  o Double balance
+}
+
+/**
+ * 捐献资金
+ */
+transaction donate {
+  o String donorId
+  o Double balance
+  o String type
+}
