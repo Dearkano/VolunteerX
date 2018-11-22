@@ -1,25 +1,43 @@
 import React, { useState } from 'react'
 import { Drawer, List, NavBar, Icon } from 'antd-mobile'
 import ListItem from 'antd-mobile/lib/list/ListItem'
-import { Router, Location, RouteComponentProps, WindowLocation, navigate } from '@reach/router'
+import { Router, RouteComponentProps, navigate } from '@reach/router'
 import charityIcon from './assets/aixinjuanzeng.png'
 import volunteerIcon from './assets/gonggongfuwu.png'
 import homeIcon from './assets/zhuye.png'
-import IssueVolunteer from './pages/Charity/issue'
+import IssueCharityWorks from './pages/Charity/issue'
+import CharityWorks from './pages/Charity'
 
 function App() {
   const [open, setOpen] = useState(false)
   const onOpenChange = () => setOpen(prev => !prev)
+  interface Props {
+    // tslint:disable-next-line:no-any
+    source: any,
+    content: string
+    cl: () => void
+  }
+  const Item = (props: Props) => {
+    const { source, content, cl } = props
+
+    return (
+      <ListItem
+        onClick={() => {
+          onOpenChange()
+          cl()
+        }}
+        thumb={<img src={source} />}
+      >
+        {content}
+      </ListItem>)
+  }
   const sidebar = (
     <List>
-      <ListItem thumb={<img src={homeIcon} />}>主页</ListItem>
-      <ListItem thumb={<img src={volunteerIcon} />}>志愿者</ListItem>
-      <ListItem thumb={<img src={charityIcon} />}>公益捐赠</ListItem>
-      <ListItem
-        thumb={<img src={charityIcon} />}
-        onClick={() => navigate('/issue/charityworks')}
-      >发布捐赠项目
-      </ListItem>
+      <Item source={homeIcon} content="主页" cl={() => navigate('/')} />
+      <Item source={volunteerIcon} content="志愿者" cl={() => navigate('/volunteerworks')} />
+      <Item source={charityIcon} content="公益捐赠" cl={() => navigate('/charityworks')} />
+      <Item source={charityIcon} content="发布捐赠项目" cl={() => navigate('/issue/charityworks')} />
+      <Item source={charityIcon} content="发布志愿者项目" cl={() => navigate('/issue/volunteerworks')} />
     </List >);
 
   return (
@@ -36,7 +54,8 @@ function App() {
         onOpenChange={onOpenChange}
       >
         <Router>
-          <Route path="/issue/charityworks" component={IssueVolunteer} />
+          <Route path="/charityworks" component={CharityWorks} />
+          <Route path="/issue/charityworks" component={IssueCharityWorks} />
         </Router>
       </Drawer>
 
@@ -56,4 +75,4 @@ const Route: React.FunctionComponent<
     return React.createElement(component, otherProps)
   }
 
-export default App;
+export default App

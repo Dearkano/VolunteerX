@@ -20,6 +20,8 @@ abstract asset Project identified by id {
   o String description
   // 项目发行公益组织
   o String issuer
+    // 项目介绍图片
+  o String imageUrl
   // 截止时间
   o DateTime deadline
   // 项目状态

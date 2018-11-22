@@ -19,7 +19,7 @@ export interface FetchError {
 }
 
 async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
-  const baseUrl = 'http://111.231.120.224/3000/api'
+  const baseUrl = 'http://111.231.120.224:3000/api'
   const requestURL = `${baseUrl}/${url}`
 
   const response = await fetch(requestURL, init)

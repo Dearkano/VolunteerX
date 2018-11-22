@@ -11,5 +11,6 @@ declare module '@volunteerx' {
     issuer: string,
     deadline: string,
     status: string
+    imageUrl:string
   }
 }
