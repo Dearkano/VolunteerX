@@ -31,22 +31,23 @@ export default () => {
       <List>
         {data.map(
           item => (
-            <>
+            <div key={item.id}>
               <Card key={item.id}>
                 <Card.Header
                   title={item.title}
                   extra={<span>{item.type}</span>}
                 />
                 <Card.Body>
+                  <img style={{ width: '100%' }} src={item.imageUrl} />
                   <div>{item.description}</div>
                 </Card.Body>
                 <Card.Footer
-                  content={item.targetBalance}
-                  extra={item.receivedVoteToken}
+                  content={<div style={{ textAlign: 'left' }}>目标金额: {item.targetBalance}</div>}
+                  extra={<div style={{ textAlign: 'right' }}>获得投票: {item.receivedVoteToken}</div>}
                 />
               </Card>
               <WhiteSpace size="lg" style={{ backgroundColor: 'rgb(245,245,249)' }} />
-            </>
+            </div>
           )
         )}
       </List>
