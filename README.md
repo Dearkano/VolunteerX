@@ -26,7 +26,7 @@
 ### 对象储存
 * [七牛云](https://www.qiniu.com/)
 
-## 安装
+## 前端开发
 * 下载项目
 
 `git clone https://github.com/Dearkano/VolunteerX.git`
@@ -39,3 +39,115 @@
 * 项目构建
 
 `npm run build`
+
+## 智能合约开发
+*在Ubuntu上运行*
+### 第一次启动
+```
+cd
+
+git clone https://github.com/Dearkano/VolunteerX.git
+
+```
+
+安装开发环境
+```
+curl -O https://hyperledger.github.io/composer/latest/prereqs-ubuntu.sh
+
+chmod u+x prereqs-ubuntu.sh
+
+
+./prereqs-ubuntu.sh
+```
+
+安装composer
+
+`npm install -g composer-cli@0.20`
+
+安装rest server
+
+`npm install -g composer-rest-server@0.20`
+
+安装fabric工具包
+```
+mkdir ~/fabric-dev-servers && cd ~/fabric-dev-servers
+
+curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.tar.gz
+
+tar -xvf fabric-dev-servers.tar.gz
+```
+
+下载fabric镜像
+```
+cd ~/fabric-dev-servers
+
+export FABRIC_VERSION=hlfv12
+
+./downloadFabric.sh
+```
+
+启动fabric网络
+```
+cd ~/fabric-dev-servers
+
+export FABRIC_VERSION=hlfv12
+
+./startFabric.sh
+
+./createPeerAdminCard.sh
+```
+
+启动composer网络
+
+`cd ~/VolunteerX/contract`
+
+安装composer网络 此处版本更新为package.json中的版本
+
+`composer network install --card PeerAdmin@hlfv1 --archiveFile volunteerx-network@0.1.0.bna`
+
+启动composer网络
+
+`composer network start --networkName volunteerx-network --networkVersion 0.1.0 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file networkadmin.card`
+
+导入composer card
+
+`composer card import -f networkadmin.card`
+
+验证是否安装成功
+
+`composer network ping -c admin@volunteerx-network`
+
+启动rest server 网络名称与上面保持一致 test server与public net选择Y 其余N
+
+`composer-rest-server`
+
+### 更新网络
+更新model与logic的内容后，需要更改package.json中的版本
+
+```
+composer archive create --sourceType dir --sourceName . -a volunteerx-network@0.1.1.bna
+
+composer network install --card PeerAdmin@hlfv1 --archiveFile volunteerx-network@0.1.1.bna
+
+composer network upgrade -c PeerAdmin@hlfv1 -n volunteerx-network -V 0.1.1
+
+composer-rest-server
+```
+
+### 关闭网络
+```
+cd fabric-dev-servers
+
+./stopFabric.sh
+
+./teardownFabric.sh
+```
+
+### 删除环境
+```
+docker kill $(docker ps -q)
+
+docker rm $(docker ps -aq)
+
+docker rmi $(docker images dev-* -q)
+```
