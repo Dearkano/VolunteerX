@@ -19,7 +19,7 @@ abstract asset Project identified by id {
   // 项目简介
   o String description
   // 项目发行公益组织
-  --> Commonweal issuer
+  o String issuer
   // 截止时间
   o DateTime deadline
   // 项目状态

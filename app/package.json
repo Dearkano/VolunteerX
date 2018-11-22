@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reach/router": "^1.2.1",
+    "antd-mobile": "2.2.2",
+    "emotion": "^9.2.12",
+    "rc-form": "^2.2.6",
     "react": "^16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
-    "react-scripts-ts": "3.1.0",
-    "antd-mobile": "2.2.2",
-    "@reach/router": "^1.2.1",
-    "emotion": "^9.2.12",
-    "react-emotion": "^9.2.12"
+    "react-emotion": "^9.2.12",
+    "react-scripts-ts": "3.1.0"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.dev.js --progress --hot",

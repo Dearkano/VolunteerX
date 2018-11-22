@@ -1,10 +1,10 @@
 declare module '@volunteerx' {
-  export interface ICharityWorks {
-    type: string
-    targetBalance: number,
-    receivedVoteToken: number,
+  export interface IVolunteerWorks {
+    maxParticipants: number,
+    award: number,
     volunteers: string[],
-    beneficiary: string,
+    confirmedVolunteers: string[],
+    unConfirmedVolunteers: string[],
     id: string,
     title: string,
     description: string,

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Drawer, List, NavBar, Icon } from 'antd-mobile'
 import ListItem from 'antd-mobile/lib/list/ListItem'
-import { navigate } from '@reach/router'
+import { Router, Location, RouteComponentProps, WindowLocation, navigate } from '@reach/router'
 import charityIcon from './assets/aixinjuanzeng.png'
 import volunteerIcon from './assets/gonggongfuwu.png'
 import homeIcon from './assets/zhuye.png'
+import IssueVolunteer from './pages/Charity/issue'
 
 function App() {
   const [open, setOpen] = useState(false)
@@ -14,6 +15,11 @@ function App() {
       <ListItem thumb={<img src={homeIcon} />}>主页</ListItem>
       <ListItem thumb={<img src={volunteerIcon} />}>志愿者</ListItem>
       <ListItem thumb={<img src={charityIcon} />}>公益捐赠</ListItem>
+      <ListItem
+        thumb={<img src={charityIcon} />}
+        onClick={() => navigate('/issue/charityworks')}
+      >发布捐赠项目
+      </ListItem>
     </List >);
 
   return (
@@ -28,8 +34,26 @@ function App() {
         sidebar={sidebar}
         open={open}
         onOpenChange={onOpenChange}
-      />
+      >
+        <Router>
+          <Route path="/issue/charityworks" component={IssueVolunteer} />
+        </Router>
+      </Drawer>
+
     </div>);
 }
+
+const Route: React.FunctionComponent<
+  RouteComponentProps & {
+    // @types/react 里 createElement 签名很混乱
+    // tslint:disable-next-line:no-any
+    component: any
+    // component: React.FunctionComponent<any>
+  }
+  > = props => {
+    const { path, component, ...otherProps } = props
+
+    return React.createElement(component, otherProps)
+  }
 
 export default App;
