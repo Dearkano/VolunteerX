@@ -10,18 +10,18 @@
 ## 项目技术
 
 ### 区块链
-* [Hyperledger Fabric](https://gerrit.hyperledger.org/r/#/admin/projects/fabric) ^1.2
-* [Hyperledger Composer](https://github.com/hyperledger/composer) ^0.20
+* [Hyperledger Fabric](https://gerrit.hyperledger.org/r/#/admin/projects/fabric) `^1.2`
+* [Hyperledger Composer](https://github.com/hyperledger/composer) `^0.20`
 
 ### 部署环境 
 * 腾讯云 4vCPU 32G内存 
-* Ubuntu 16.04
-* Docker 18.05.0-ce
-* npm 6.0.1
+* Ubuntu `16.04`
+* Docker `18.05.0-ce`
+* npm `6.0.1`
 
 ### 前端
-* [React](https://github.com/facebook/react) ^16.7.0-alpha
-* [Antd-mobile](https://mobile.ant.design) 2.2.2
+* [React](https://github.com/facebook/react) `^16.7.0-alpha`
+* [Antd-mobile](https://mobile.ant.design) `2.2.2`
 
 ### 对象储存
 * [七牛云](https://www.qiniu.com/)
