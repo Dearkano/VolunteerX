@@ -20,7 +20,7 @@
  */
 async function issueVolunteerWork(tx) {
     const assetRegistry = await getAssetRegistry('org.volunteerx.network.VolunteerWork')
-    await assetRegistry.update(tx.project)
+    await assetRegistry.add(tx.project)
 }
 
 /**
@@ -29,7 +29,7 @@ async function issueVolunteerWork(tx) {
 async function issueCharityWork(tx) {
     const assetRegistry = await getAssetRegistry('org.volunteerx.network.CharityWork')
 
-    return await assetRegistry.update(tx.project)
+    return await assetRegistry.add(tx.project)
 }
 
 /**

@@ -36,7 +36,7 @@ asset CharityWork extends Project {
   // 已获得的投票数
   o Double receivedVoteToken
   // 参与投票的志愿者
-  o String volunteers
+  o String[] volunteers
   // 受捐献人
   o String beneficiary
 }
