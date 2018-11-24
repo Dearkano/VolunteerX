@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { List, InputItem, Button, WingBlank, PickerView } from 'antd-mobile';
-import { createForm } from 'rc-form';
-import ListItem from 'antd-mobile/lib/list/ListItem';
-import { navigate } from '@reach/router';
+import { List, InputItem, Button, WingBlank, PickerView } from 'antd-mobile'
+import { createForm } from 'rc-form'
+import ListItem from 'antd-mobile/lib/list/ListItem'
+import { navigate } from '@reach/router'
 import container from '../../containers/user'
 
 // tslint:disable-next-line:no-any

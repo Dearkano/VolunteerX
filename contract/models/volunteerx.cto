@@ -38,7 +38,7 @@ asset CharityWork extends Project {
   // 已获得的投票数
   o Double receivedVoteToken
   // 参与投票的志愿者
-  -->VoteEntity[] voteEntities
+  o VoteEntity[] voteEntities
   // 受捐献人
   o String beneficiary
 }
@@ -70,8 +70,7 @@ asset TokenPool identified by type {
 /**
  * 投票实体
  */
- asset VoteEntity identified by id{
-   o String id
+concept VoteEntity{
    o String volunteer
    o Double balance
  }

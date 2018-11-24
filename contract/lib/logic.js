@@ -113,7 +113,6 @@ async function vote(tx) {
 
     const volunteerRegistry = await getParticipantRegistry('org.volunteerx.network.Volunteer')
     const charityWorkRegistry = await getAssetRegistry('org.volunteerx.network.CharityWork')
-    const voteEntityRegistry = await getAssetRegistry('org.volunteerx.network.VoteEntity')
 
     // 更新志愿者账本
     const volunteer = await volunteerRegistry.get(volunteerId)
@@ -127,9 +126,7 @@ async function vote(tx) {
         volunteer: volunteerId,
         balance: balance
     }
-    await voteEntityRegistry.add(ve)
-    const newVe = await voteEntityRegistry.get(`${projectId}-${volunteerId}`)
-    project.voteEntities.push(newVe)
+    project.voteEntities.push(ve)
 
     // 判断是否满足触发条件
     if (project.receivedToken >= project.targetBalance) {
