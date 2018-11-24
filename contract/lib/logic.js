@@ -113,7 +113,7 @@ async function vote(tx) {
 
     const volunteerRegistry = await getParticipantRegistry('org.volunteerx.network.Volunteer')
     const charityWorkRegistry = await getAssetRegistry('org.volunteerx.network.CharityWork')
-    var voteEntityRegistry = await getVoteEntityRegistry('org.volunteerx.network.VoteEntity')
+    const voteEntityRegistry = await getAssetRegistry('org.volunteerx.network.VoteEntity')
 
     // 更新志愿者账本
     const volunteer = await volunteerRegistry.get(volunteerId)
