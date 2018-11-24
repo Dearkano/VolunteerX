@@ -127,7 +127,9 @@ async function vote(tx) {
         volunteer: volunteerId,
         balance: balance
     }
-    project.voteEntities.push(ve)
+    await voteEntityRegistry.add(ve)
+    const newVe = await voteEntityRegistry.get(`${projectId}-${volunteerId}`)
+    project.voteEntities.push(newVe)
 
     // 判断是否满足触发条件
     if (project.receivedToken >= project.targetBalance) {
@@ -135,7 +137,6 @@ async function vote(tx) {
         return Promise.all([
             volunteerRegistry.update(volunteer),
             charityWorkRegistry.update(project),
-            voteEntityRegistry.add(ve),
             tokenTransfer(projectId, balance)
         ])
     } else {

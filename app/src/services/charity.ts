@@ -33,6 +33,6 @@ export function vote(id: string, balance: number) {
       balance,
       volunteerId: myId,
       projectId: id,
-    }
+    },
   })
 }
