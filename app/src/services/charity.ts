@@ -21,3 +21,4 @@ export function issueCharityWorks(value: ICharityWorks) {
 }
 
 export const getCharityWorks = () => GET('CharityWork')
+export const getCharityWork = (id: string) => GET(`CharityWork/${id}`)

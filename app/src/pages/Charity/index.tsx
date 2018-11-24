@@ -42,7 +42,7 @@ export default () => {
           item => (
             <div key={item.id}>
               <Card key={item.id}>
-                    <Card.Body>
+                <Card.Body>
                   <img style={{ width: '100%' }} src={item.imageUrl} />
                   <div className={titleStyle}>{item.title}</div>
                   <div className={optionStyle}>

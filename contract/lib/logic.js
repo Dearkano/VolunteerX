@@ -111,6 +111,11 @@ async function vote(tx) {
     // 更新项目账本
     const project = await charityWorkRegistry.get(projectId)
     project.receivedToken += balance
+    project.voteEntities.push({
+        id: `${projectId}-${volunteerId}`,
+        volunteer: volunteerId,
+        balance: balance
+    })
 
     // 判断是否满足触发条件
     if (project.receivedToken >= project.targetBalance) {
