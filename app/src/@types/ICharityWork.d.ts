@@ -1,4 +1,9 @@
 declare module '@volunteerx' {
+  interface VoteEntity{
+    id:string
+    volunteer:string
+    balance:number
+  }
   export interface ICharityWorks {
     // 项目类型 ex 自然灾害 教育捐赠
     type: string
@@ -7,7 +12,7 @@ declare module '@volunteerx' {
     // 已获得投票数
     receivedVoteToken: number
     // 参与的志愿者
-    volunteers: string[]
+    voteEntities: VoteEntity[]
     // 受捐人
     beneficiary: string
     // 项目标识符id

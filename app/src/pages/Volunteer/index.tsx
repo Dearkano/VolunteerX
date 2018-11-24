@@ -47,9 +47,9 @@ export default () => {
                   <img style={{ width: '100%' }} src={item.imageUrl} />
                   <div className={titleStyle}>{item.title}</div>
                   <div className={optionStyle}>
-                    <div>募集人数: {item.maxParticipants}</div>
+                    <div>报名人数: {item.volunteers.length}/{item.maxParticipants}</div>
                     <div>截止日期:{dayjs(item.deadline).fromNow()}</div>
-                    <div>报名人数: {item.volunteers.length}</div>
+                    <div>奖励:{item.award} </div>
                   </div>
                 </Card.Body>
               </Card>

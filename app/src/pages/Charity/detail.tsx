@@ -80,17 +80,10 @@ export default (props: Props) => {
         <div className={mesStyle}>受益人:{beneficiary.name}</div>
         <div className={mesStyle}>发行组织:{issuer.name}</div>
         <Accordion defaultActiveKey="0" className="my-accordion" onChange={onChange}>
-          <Accordion.Panel header={`参与投票的志愿者(${data.volunteers.length})`} >
+          <Accordion.Panel header={`参与投票的志愿者(${data.voteEntities.length})`} >
             <List className="my-list">
-              {data.volunteers.map(volunteer => (
-                <List.Item>{volunteer}</List.Item>
-              ))}
-            </List>
-          </Accordion.Panel>
-          <Accordion.Panel header={`完成任务的志愿者(${data.confirmedVolunteers.length})`} className="pad">
-            <List className="my-list">
-              {data.confirmedVolunteers.map(volunteer => (
-                <List.Item>{volunteer}</List.Item>
+              {data.voteEntities.map(voteEntity => (
+                <List.Item>{voteEntity.volunteer}{voteEntity.balance}</List.Item>
               ))}
             </List>
           </Accordion.Panel>
