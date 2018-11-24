@@ -32,7 +32,7 @@ const UserInfo: React.FunctionComponent<Props> = ({ isLogIn, myInfo, type, close
   <div
     className={root}
     onClick={() => {
-      isLogIn ? navigate('usercenter') : navigate('logon')
+      isLogIn ? navigate('usercenter') : navigate('/logon')
       closeDrawer()
     }}
   >

@@ -153,7 +153,11 @@ async function tokenTransfer(projectId, balance) {
         beneficiaryRegistry.update(beneficiary)
     ])
 }
-
+/**
+ * Track the trade of a commodity from one trader to another
+ * @param {org.volunteerx.network.toenIssue} tokenIssue - the trade to be processed
+ * @transaction
+ */
 async function tokenIssue(tx) {
     const {
         bankId,

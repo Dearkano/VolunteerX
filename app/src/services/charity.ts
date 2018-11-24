@@ -8,7 +8,7 @@ export function issueCharityWorks(value: ICharityWorks) {
     ...value,
     issuer,
     id: `charityworks-${issuer}-${generateHash()}`,
-    volunteers: [],
+    voteEntities: [],
     receivedVoteToken: 0,
     status: 'underway',
   }
