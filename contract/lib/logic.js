@@ -121,11 +121,11 @@ async function vote(tx) {
     // 更新项目账本
     const project = await charityWorkRegistry.get(projectId)
     project.receivedVoteToken += balance
-    const ve = {
-        id: `${projectId}-${volunteerId}`,
-        volunteer: volunteerId,
-        balance: balance
-    }
+    const factory = getFactory()
+    const ve = factory.newConcept('org.volunteerx.network', 'VoteEntity')
+    ve.volunteer = volunteerId
+    ve.balance = balance
+
     project.voteEntities.push(ve)
 
     // 判断是否满足触发条件

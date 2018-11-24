@@ -1,6 +1,5 @@
 declare module '@volunteerx' {
   interface VoteEntity{
-    id:string
     volunteer:string
     balance:number
   }
