@@ -17,6 +17,8 @@
 
 /**
  * 发布志愿者项目 
+ * @param {org.volunteerx.network.issueVolunteerWork} issueVolunteerWork - the trade to be processed
+ * @transaction
  */
 async function issueVolunteerWork(tx) {
     const assetRegistry = await getAssetRegistry('org.volunteerx.network.VolunteerWork')
@@ -25,6 +27,8 @@ async function issueVolunteerWork(tx) {
 
 /**
  * 发布捐赠项目 
+ * @param {org.volunteerx.network.issueCharityWork} issueCharityWork - the trade to be processed
+ * @transaction
  */
 async function issueCharityWork(tx) {
     const assetRegistry = await getAssetRegistry('org.volunteerx.network.CharityWork')
@@ -34,6 +38,8 @@ async function issueCharityWork(tx) {
 
 /**
  * 志愿者报名参与志愿者活动
+ * @param {org.volunteerx.network.applyForVolunteerWork} applyForVolunteerWork - the trade to be processed
+ * @transaction
  */
 async function applyForVolunteerWork(tx) {
     const {
@@ -53,6 +59,8 @@ async function applyForVolunteerWork(tx) {
 
 /**
  * 确权参与
+ * @param {org.volunteerx.network.authorizeToken} authorizeToken - the trade to be processed
+ * @transaction
  */
 async function authorizeToken(tx) {
     const {
@@ -93,6 +101,8 @@ async function authorizeToken(tx) {
 
 /**
  * 志愿者投票捐赠项目
+ * @param {org.volunteerx.network.vote} vote - the trade to be processed
+ * @transaction
  */
 async function vote(tx) {
     const {
@@ -103,6 +113,7 @@ async function vote(tx) {
 
     const volunteerRegistry = await getParticipantRegistry('org.volunteerx.network.Volunteer')
     const charityWorkRegistry = await getAssetRegistry('org.volunteerx.network.CharityWork')
+    var voteEntityRegistry = await getVoteEntityRegistry('org.volunteerx.network.VoteEntity')
 
     // 更新志愿者账本
     const volunteer = await volunteerRegistry.get(volunteerId)
@@ -111,11 +122,12 @@ async function vote(tx) {
     // 更新项目账本
     const project = await charityWorkRegistry.get(projectId)
     project.receivedToken += balance
-    project.voteEntities.push({
+    const ve = {
         id: `${projectId}-${volunteerId}`,
         volunteer: volunteerId,
         balance: balance
-    })
+    }
+    project.voteEntities.push(ve)
 
     // 判断是否满足触发条件
     if (project.receivedToken >= project.targetBalance) {
@@ -123,6 +135,7 @@ async function vote(tx) {
         return Promise.all([
             volunteerRegistry.update(volunteer),
             charityWorkRegistry.update(project),
+            voteEntityRegistry.add(ve),
             tokenTransfer(projectId, balance)
         ])
     } else {
@@ -133,6 +146,11 @@ async function vote(tx) {
     }
 }
 
+/**
+ * Track the trade of a commodity from one trader to another
+ * @param {org.volunteerx.network.tokenTransfer} tokenTransfer - the trade to be processed
+ * @transaction
+ */
 async function tokenTransfer(projectId, balance) {
     const charityWorkRegistry = await getAssetRegistry('org.volunteerx.network.CharityWork')
     const tokenPoolRegistry = await getAssetRegistry('org.volunteerx.network.TokenPool')
@@ -155,7 +173,7 @@ async function tokenTransfer(projectId, balance) {
 }
 /**
  * Track the trade of a commodity from one trader to another
- * @param {org.volunteerx.network.toenIssue} tokenIssue - the trade to be processed
+ * @param {org.volunteerx.network.tokenIssue} tokenIssue - the trade to be processed
  * @transaction
  */
 async function tokenIssue(tx) {
@@ -172,6 +190,11 @@ async function tokenIssue(tx) {
     return await bankRegistry.update(bank)
 }
 
+/**
+ * Track the trade of a commodity from one trader to another
+ * @param {org.volunteerx.network.donate} donate - the trade to be processed
+ * @transaction
+ */
 async function donate(tx) {
     const {
         donorId,
