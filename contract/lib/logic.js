@@ -146,11 +146,7 @@ async function vote(tx) {
     }
 }
 
-/**
- * Track the trade of a commodity from one trader to another
- * @param {org.volunteerx.network.tokenTransfer} tokenTransfer - the trade to be processed
- * @transaction
- */
+
 async function tokenTransfer(projectId, balance) {
     const charityWorkRegistry = await getAssetRegistry('org.volunteerx.network.CharityWork')
     const tokenPoolRegistry = await getAssetRegistry('org.volunteerx.network.TokenPool')
