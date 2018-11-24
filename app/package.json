@@ -4,8 +4,11 @@
   "private": true,
   "dependencies": {
     "@reach/router": "^1.2.1",
+    "antd": "^3.10.8",
     "antd-mobile": "2.2.2",
+    "dayjs": "^1.7.7",
     "emotion": "^9.2.12",
+    "random-hash": "^4.0.1",
     "rc-form": "^2.2.6",
     "react": "^16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",

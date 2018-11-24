@@ -4,6 +4,12 @@ import App from './App';
 import 'antd-mobile/dist/antd-mobile.css';
 import './index.css';
 import { injectGlobal } from 'emotion'
+import dayjs from 'dayjs'
+import zh from 'dayjs/locale/zh-cn'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.locale(zh, null, false)
+dayjs.extend(relativeTime)
 
 injectGlobal`
   * {
@@ -41,6 +47,7 @@ injectGlobal`
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 `
+
 ReactDOM.render(
   <App />,
   document.getElementById('root') as HTMLElement

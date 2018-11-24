@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { css } from 'emotion'
 import { List, Card, Icon, WhiteSpace, WingBlank } from 'antd-mobile'
-import { ICharityWorks } from '@volunteerx'
-import { getCharityWorks } from '../../services/charity'
+import { IVolunteerWorks } from '@volunteerx'
+import { getVolunteerWorks } from '../../services/volunteer'
+import { navigate } from '@reach/router'
 import dayjs from 'dayjs'
 
 const titleStyle = css`&&{
@@ -18,11 +19,11 @@ const optionStyle = css`&&{
 }`
 
 export default () => {
-  const [data, setData] = useState<ICharityWorks[]>([])
+  const [data, setData] = useState<IVolunteerWorks[]>([])
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     (async () => {
-      const res = await getCharityWorks()
+      const res = await getVolunteerWorks()
       res.fail()
         .succeed(newData => {
           setIsLoading(false)
@@ -41,14 +42,14 @@ export default () => {
         {data.map(
           item => (
             <div key={item.id}>
-              <Card key={item.id}>
-                    <Card.Body>
+              <Card key={item.id} onClick={() => navigate(`/volunteerwork/${item.id}`)}>
+                <Card.Body>
                   <img style={{ width: '100%' }} src={item.imageUrl} />
                   <div className={titleStyle}>{item.title}</div>
                   <div className={optionStyle}>
-                    <div>目标金额: {item.targetBalance}</div>
+                    <div>募集人数: {item.maxParticipants}</div>
                     <div>截止日期:{dayjs(item.deadline).fromNow()}</div>
-                    <div>类型: {item.type}</div>
+                    <div>报名人数: {item.volunteers.length}</div>
                   </div>
                 </Card.Body>
               </Card>

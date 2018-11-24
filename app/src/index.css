@@ -1,14 +1,28 @@
+@import '~antd/dist/antd.css';
+
 .my-drawer {
   position: relative;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 .my-drawer .am-drawer-sidebar {
   background-color: #fff;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 .my-drawer .am-drawer-sidebar .am-list {
   width: 150px;
   padding: 0;
+}
+html:not([data-scale]) .am-list-body::before  {
+  content: '';
+  background-color: #fff;
+}
+
+
+html:not([data-scale]) .am-list-body::after {
+  content: '';
+  background-color: #fff;
 }
