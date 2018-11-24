@@ -76,7 +76,7 @@ async function authorizeToken(tx) {
     const project = await volunteerWorkRegistry.get(projectId)
 
     if (commonwealId !== project.issuer.id) {
-        return
+        return null
     }
 
     // 志愿者获取token
@@ -86,17 +86,15 @@ async function authorizeToken(tx) {
     let pos = volunteer.unFinishedVolunteerWorks.indexOf(project.id)
     volunteer.unFinishedVolunteerWorks.splice(pos, 1)
     volunteer.finishedVolunteerWorks.push(project.id)
+    await volunteerRegistry.update(volunteer)
 
     // 项目添加该志愿者
     pos = project.unConfirmedVolunteers.indexOf(volunteer.id)
     project.unConfirmedVolunteers.splice(pos, 1)
     project.confirmedVolunteers.push(volunteer.id)
+    await volunteerWorkRegistry.update(project)
 
-    // 更新账本
-    return await Promise.all([
-        volunteerRegistry.update(volunteer),
-        volunteerWorkRegistry.update(project)
-    ])
+    return null
 }
 
 /**
@@ -117,7 +115,7 @@ async function vote(tx) {
     // 更新志愿者账本
     const volunteer = await volunteerRegistry.get(volunteerId)
     volunteer.voteTokenBalance -= balance
-
+    await volunteerRegistry.update(volunteer)
     // 更新项目账本
     const project = await charityWorkRegistry.get(projectId)
     project.receivedVoteToken += balance
@@ -127,20 +125,15 @@ async function vote(tx) {
     ve.balance = balance
 
     project.voteEntities.push(ve)
+    await charityWorkRegistry.update(project)
 
     // 判断是否满足触发条件
     if (project.receivedToken >= project.targetBalance) {
         // TODO:资金池资金不足报错
-        return Promise.all([
-            volunteerRegistry.update(volunteer),
-            charityWorkRegistry.update(project),
-            tokenTransfer(projectId, balance)
-        ])
+        return await tokenTransfer(projectId, balance)
+
     } else {
-        return await Promise.all([
-            volunteerRegistry.update(volunteer),
-            charityWorkRegistry.update(project)
-        ])
+        return null
     }
 }
 
@@ -156,14 +149,13 @@ async function tokenTransfer(projectId, balance) {
 
     // 更新账本
     project.status = 1
+    await charityWorkRegistry.update(project)
     tokenPool.balance -= balance
+    await tokenPoolRegistry.update(tokenPool)
     beneficiary.balance += balance
+    await beneficiaryRegistry.update(beneficiary)
 
-    return await Promise.all([
-        charityWorkRegistry.update(project),
-        tokenPoolRegistry.update(tokenPool),
-        beneficiaryRegistry.update(beneficiary)
-    ])
+    return null
 }
 /**
  * Track the trade of a commodity from one trader to another
@@ -204,11 +196,10 @@ async function donate(tx) {
 
     if (donor.balance >= balance) {
         donor.balance -= balance
+        await donorRegistry.update(donor)
         tokenPool.balance += balance
+        await tokenPoolRegistry.update(tokenPool)
     }
 
-    return await Promise.all([
-        donorRegistry.update(donor),
-        tokenPoolRegistry.update(tokenPool)
-    ])
+    return null
 }
