@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { css } from 'emotion'
-import { Accordion, List, Icon, WingBlank } from 'antd-mobile'
+import { Accordion, List, Icon, WingBlank, Button } from 'antd-mobile'
 import { getCharityWork } from '../../services/charity'
 import { ICharityWorks, ICommonweal, IBeneficiary } from '@volunteerx'
 import { getCommwealById } from '../../services/commonweal'
 import { getBeneficiaryById } from '../../services/beneficiary'
+import container from '../../containers/user'
 
 const bodyStyle = css`&&{
   display:flex;
@@ -37,6 +38,9 @@ export default (props: Props) => {
   const [issuer, setIssuer] = useState<ICommonweal | null>(null)
   const [beneficiary, setBeneficiary] = useState<IBeneficiary | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isAttend, setIsAttend] = useState(false)
+  const [isPending, setIsPending] = useState(false)
+  const myId = container.state.myInfo ? container.state.myInfo.id : ''
   useEffect(() => {
     (async () => {
       const res = await getCharityWork(id)
@@ -53,6 +57,11 @@ export default (props: Props) => {
                       setData(newData)
                       setIssuer(newIssuer)
                       setBeneficiary(newBeneficiary)
+                      for (const voteEntity of newData.voteEntities) {
+                        if (voteEntity.volunteer === myId) {
+                          setIsAttend(true)
+                        }
+                      }
                       setIsLoading(false)
                     }
                   )
@@ -62,11 +71,14 @@ export default (props: Props) => {
         })
     })()
   }, [])
+  const onChange = () => null
+  const attend = () => {
+    setIsPending(true)
+  }
 
   if (isLoading || !data || !issuer || !beneficiary) {
     return <Icon type="loading" size="lg" />
   }
-  const onChange = () => null
 
   return (
     <WingBlank>
@@ -79,6 +91,12 @@ export default (props: Props) => {
         <div className={mesStyle}>已获得投票:{data.receivedVoteToken}</div>
         <div className={mesStyle}>受益人:{beneficiary.name}</div>
         <div className={mesStyle}>发行组织:{issuer.name}</div>
+        <Button
+          disabled={isPending}
+          onClick={attend}
+        >
+          {isPending ? '...' : isAttend ? '已报名' : '报名'}
+        </Button>
         <Accordion defaultActiveKey="0" className="my-accordion" onChange={onChange}>
           <Accordion.Panel header={`参与投票的志愿者(${data.voteEntities.length})`} >
             <List className="my-list">

@@ -121,7 +121,7 @@ async function vote(tx) {
 
     // 更新项目账本
     const project = await charityWorkRegistry.get(projectId)
-    project.receivedToken += balance
+    project.receivedVoteToken += balance
     const ve = {
         id: `${projectId}-${volunteerId}`,
         volunteer: volunteerId,
