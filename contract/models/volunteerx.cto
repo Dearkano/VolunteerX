@@ -26,13 +26,13 @@ abstract asset Project identified by id {
   o DateTime deadline
   // 项目状态
   o Status status
+  // 捐献项目类型
+  o String type
 }
 /**
  * 公益活动
  */
 asset CharityWork extends Project {
-  // 捐献项目类型
-  o String type
   // 目标捐赠金额
   o Double targetBalance
   // 已获得的投票数

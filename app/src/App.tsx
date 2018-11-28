@@ -12,6 +12,7 @@ import homeIcon from './assets/zhuye.png'
 import IssueCharityWorks from './pages/Charity/issue'
 import IssueVolunteerWorks from './pages/Volunteer/issue'
 import CharityWorks from './pages/Charity'
+import CharityWork from './pages/Charity/detail'
 import VolunteerWorks from './pages/Volunteer'
 import VolunteerWork from './pages/Volunteer/detail'
 import Logon from './pages/Logon'
@@ -97,6 +98,7 @@ function App() {
           <Route path="/issue/charityworks" component={IssueCharityWorks} />
           <Route path="/issue/volunteerworks" component={IssueVolunteerWorks} />
           <Route path="/volunteerwork/:id" component={VolunteerWork} />
+          <Route path="/charitywork/:id" component={CharityWork} />
         </Router>
       </Drawer>
 

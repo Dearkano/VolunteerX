@@ -4,6 +4,7 @@ import { List, Card, Icon, WhiteSpace, WingBlank } from 'antd-mobile'
 import { ICharityWorks } from '@volunteerx'
 import { getCharityWorks } from '../../services/charity'
 import dayjs from 'dayjs'
+import { navigate } from '@reach/router';
 
 const titleStyle = css`&&{
   font-size:18px;
@@ -41,7 +42,7 @@ export default () => {
         {data.map(
           item => (
             <div key={item.id}>
-              <Card key={item.id}>
+              <Card key={item.id} onClick={() => navigate(`/charitywork/${item.id}`)}>
                 <Card.Body>
                   <img style={{ width: '100%' }} src={item.imageUrl} />
                   <div className={titleStyle}>{item.title}</div>
