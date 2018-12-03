@@ -1,9 +1,10 @@
 import { GET, POST } from '../utils/fetch'
 import { IVolunteerWorks } from '@volunteerx';
 import generateHash from 'random-hash';
+import container from '../containers/user'
 
 export function issueVolunteerWorks(value: IVolunteerWorks) {
-  const issuer = 'zghszh'
+  const issuer = container.state.myInfo ? container.state.myInfo.id : ''
   const data: IVolunteerWorks = {
     ...value,
     issuer,
@@ -27,7 +28,7 @@ export const getVolunteerWork = (id: string) => GET(`VolunteerWork/${id}`)
 
 export const applyForVolunteerWork = (id:string) => POST('applyForVolunteerWork',{
   params:{
-    volunteerId:'zyzwf',
+    volunteerId:container.state.myInfo ? container.state.myInfo.id : '',
     projectId:id
   }
 })

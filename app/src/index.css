@@ -13,7 +13,7 @@
 }
 
 .my-drawer .am-drawer-sidebar .am-list {
-  width: 150px;
+  width: 200px;
   padding: 0;
 }
 html:not([data-scale]) .am-list-body::before  {

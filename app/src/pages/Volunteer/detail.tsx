@@ -5,15 +5,22 @@ import { getVolunteerWork } from '../../services/volunteer'
 import { IVolunteerWorks, ICommonweal } from '@volunteerx'
 import { getCommwealById } from '../../services/commonweal'
 import clock from '../../assets/clock.png'
-import people from '../../assets/people.png'
 import flag from '../../assets/flag.png'
 import award from '../../assets/award.png'
 import type from '../../assets/type.png'
+import people from '../../assets/people.png'
 import dayjs from 'dayjs'
 import ListItem from 'antd-mobile/lib/list/ListItem'
 import { applyForVolunteerWork } from '../../services/volunteer'
 import VolunteerComponent from './volunteer'
 const bodyStyle = css`
+  && {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
+`
+const subBodyStyle = css`
   && {
     display: flex;
     flex-direction: column;
@@ -138,7 +145,7 @@ export default (props: Props) => {
 
   return (
     <div className={bodyStyle}>
-      <div className={bodyStyle} style={{ marginBottom: '3rem' }}>
+      <div className={subBodyStyle} style={{ marginBottom: '3rem' }}>
         <div className={headStyle}>
           <img src={data.imageUrl} className={imageStyle} />
           <div className={titleStyle}>{data.title}</div>
@@ -245,7 +252,7 @@ export default (props: Props) => {
           >
             <List className="my-list">
               {data.confirmedVolunteers.map(volunteer => (
-                <List.Item>{volunteer}</List.Item>
+                <List.Item thumb={ <img style={{ backgroundColor: '#6acbac' }} className={iconStyle} src={people} />}>{volunteer}</List.Item>
               ))}
             </List>
           </Accordion.Panel>
@@ -268,8 +275,10 @@ const buttonStyle = css`
   && {
     bottom: 0;
     z-index: 1011;
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
     color: #fff;
+    font-weight:bold;
+    letter-spacing:5px;
   }
 `

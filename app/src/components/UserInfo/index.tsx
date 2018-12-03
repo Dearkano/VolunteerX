@@ -36,7 +36,7 @@ const UserInfo: React.FunctionComponent<Props> = ({ isLogIn, myInfo, type, close
       closeDrawer()
     }}
   >
-    <Avatar size="large">{type ? type : 'V'}</Avatar>
+    <Avatar size="large"style={{backgroundColor:'#4195d5'}}>{type ? type : 'V'}</Avatar>
     <div>{isLogIn ? myInfo && myInfo.name : '登陆'}</div>
   </div>
 )

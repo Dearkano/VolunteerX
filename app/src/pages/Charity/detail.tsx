@@ -104,29 +104,34 @@ export default (props: Props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [info, setInfo] = useState('确认')
   const [visible, setVisible] = useState(false)
-  useEffect(() => {
-    ;(async () => {
-      const res = await getCharityWork(id)
-      res.fail().succeed(async (newData: ICharityWorks) => {
-        const res1 = await getCommwealById(newData.issuer)
-        res1.fail().succeed(async newIssuer => {
-          const res2 = await getBeneficiaryById(newData.beneficiary)
-          res2.fail().succeed(newBeneficiary => {
-            setData(newData)
-            setIssuer(newIssuer)
-            setBeneficiary(newBeneficiary)
-            setIsLoading(false)
-          })
+  const getData = async () => {
+    const res = await getCharityWork(id)
+    res.fail().succeed(async (newData: ICharityWorks) => {
+      const res1 = await getCommwealById(newData.issuer)
+      res1.fail().succeed(async newIssuer => {
+        const res2 = await getBeneficiaryById(newData.beneficiary)
+        res2.fail().succeed(newBeneficiary => {
+          setData(newData)
+          setIssuer(newIssuer)
+          setBeneficiary(newBeneficiary)
+          setIsLoading(false)
         })
       })
-    })()
+    })
+  }
+  useEffect(() => {
+    ;(async () => await getData())()
   }, [])
 
   if (isLoading || !data || !issuer || !beneficiary) {
     return <Icon type="loading" size="lg" />
   }
+
   const onChange = () => null
-  const goVote = async (balance: string) => await voteAction(id, parseInt(balance, 10))
+  const goVote = async (balance: string) => {
+    await voteAction(id, parseInt(balance, 10))
+    await getData()
+  }
 
   return (
     <div className={bodyStyle}>
@@ -269,8 +274,10 @@ const buttonStyle = css`
   && {
     bottom: 0;
     z-index: 1011;
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
     color: #fff;
+    font-weight:bold;
+    letter-spacing:5px;
   }
 `

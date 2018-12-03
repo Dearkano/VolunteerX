@@ -4,7 +4,7 @@ import generateHash from 'random-hash'
 import container from '../containers/user'
 
 export function issueCharityWorks(value: ICharityWorks) {
-  const issuer = 'zghszh'
+  const issuer = container.state.myInfo ? container.state.myInfo.id : ''
   const data: ICharityWorks = {
     ...value,
     issuer,
@@ -26,8 +26,8 @@ export const getCharityWorks = () => GET('CharityWork')
 export const getCharityWork = (id: string) => GET(`CharityWork/${id}`)
 
 export function voteAction(id: string, balance: number) {
-  //const myId = container.state.myInfo ? container.state.myInfo.id : ''
-  const myId = 'zyzwf'
+  const myId = container.state.myInfo ? container.state.myInfo.id : ''
+  // const myId = 'zyzwf'
   return POST('vote', {
     params: {
       balance,

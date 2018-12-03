@@ -76,6 +76,7 @@ export default createForm()((props: any) => {
         <Button
           disabled={isLoading}
           onClick={submit}
+          type="primary"
         >{isLoading ? '...' : '登陆'}
         </Button>
         <ListItem style={{ color: 'red' }}>{tip}</ListItem>
