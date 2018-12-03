@@ -11,6 +11,8 @@ import award from '../../assets/award.png'
 import type from '../../assets/type.png'
 import dayjs from 'dayjs'
 import ListItem from 'antd-mobile/lib/list/ListItem'
+import { applyForVolunteerWork } from '../../services/volunteer'
+import VolunteerComponent from './volunteer'
 const bodyStyle = css`
   && {
     display: flex;
@@ -22,9 +24,9 @@ const titleStyle = css`
   && {
     font-size: 20px;
     color: #000;
-    text-align:left;
-    width:100%;
-    padding:10px;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
   }
 `
 const mesStyle = css`
@@ -36,16 +38,16 @@ const mesStyle = css`
     width: fit-content;
     align-items: center;
     border-radius: 3px;
-    align-self:flex-start;
-    margin-left:10px;
+    align-self: flex-start;
+    margin-left: 10px;
   }
 `
 const imageStyle = css`
   && {
     width: 100%;
-    margin-bottom:10px;
-    padding:10px;
-    border-radius:20px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 20px;
   }
 `
 const timeStyle = css`
@@ -95,27 +97,48 @@ export default (props: Props) => {
   const [data, setData] = useState<IVolunteerWorks | null>(null)
   const [issuer, setIssuer] = useState<ICommonweal | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  useEffect(() => {
-    ;(async () => {
-      const res = await getVolunteerWork(id)
-      res.fail().succeed(async (newData: IVolunteerWorks) => {
-        const res1 = await getCommwealById(newData.issuer)
-        res1.fail().succeed(newIssuer => {
-          setData(newData)
-          setIssuer(newIssuer)
-          setIsLoading(false)
-        })
+  const [disabled, setDisabled] = useState(false)
+  const [info, setInfo] = useState('我要报名')
+
+  const getData = async () => {
+    const res = await getVolunteerWork(id)
+    res.fail().succeed(async (newData: IVolunteerWorks) => {
+      const res1 = await getCommwealById(newData.issuer)
+      res1.fail().succeed(newIssuer => {
+        setData(newData)
+        setIssuer(newIssuer)
+        setIsLoading(false)
       })
-    })()
+    })
+  }
+  useEffect(() => {
+    ;(async () => await getData())()
   }, [])
 
   if (isLoading || !data || !issuer) {
     return <Icon type="loading" size="lg" />
   }
+
   const onChange = () => null
+  const apply = async () => {
+    setDisabled(true)
+    setInfo('...')
+    const res = await applyForVolunteerWork(id)
+    res
+      .fail(() => {
+        setDisabled(false)
+        setInfo('报名失败')
+      })
+      .succeed(async () => {
+        setDisabled(false)
+        setInfo('报名成功')
+        await getData()
+      })
+  }
 
   return (
-      <div className={bodyStyle}>
+    <div className={bodyStyle}>
+      <div className={bodyStyle} style={{ marginBottom: '3rem' }}>
         <div className={headStyle}>
           <img src={data.imageUrl} className={imageStyle} />
           <div className={titleStyle}>{data.title}</div>
@@ -145,32 +168,79 @@ export default (props: Props) => {
           >
             <div className={opStyle}>{data.award}投票通证</div>
           </ListItem>
-          {/*<ListItem thumb={<img style={{backgroundColor:'#abd270'}} className={iconStyle} src={type}/>} className={opStyle}>>{data.type}</ListItem>*/}
+          <ListItem
+          thumb={<img style={{ backgroundColor: '#abd270' }} className={iconStyle} src={type} />}
+          className={opStyle}
+        >
+            <div className={opStyle}>{data.type}</div>
+        </ListItem>
         </List>
 
-        <Accordion style={{marginTop:'10px'}} defaultActiveKey="0" className="my-accordion" onChange={onChange}>
-          <Accordion.Panel header={<div style={{ color: '#1296db',fontSize:'14px',textAlign:'left' }}>活动详情</div>}>
-            <div style={{padding:'10px'}}>{data.description}</div>
+        <Accordion
+          style={{ marginTop: '10px' }}
+          defaultActiveKey="0"
+          className="my-accordion"
+          onChange={onChange}
+        >
+          <Accordion.Panel
+            header={
+              <div style={{ color: '#1296db', fontSize: '14px', textAlign: 'left' }}>活动详情</div>
+            }
+          >
+            <div style={{ padding: '10px' }}>{data.description}</div>
           </Accordion.Panel>
         </Accordion>
 
-        <Accordion style={{marginTop:'10px'}} defaultActiveKey="0" className="my-accordion" onChange={onChange}>
-          <Accordion.Panel 
-          header={
-          <div style={{display:'flex',justifyContent:'space-between'}}>
-          <div style={{ color: '#1296db',fontSize:'14px',textAlign:'left' }}>已报名志愿者</div>
-          <div style={{ opacity:0.6 ,fontSize:'14px',textAlign:'left', marginRight:'5px' }}>{data.volunteers.length}/{data.maxParticipants}</div>
-          </div>}
-          
+        <Accordion
+          style={{ marginTop: '10px' }}
+          defaultActiveKey="0"
+          className="my-accordion"
+          onChange={onChange}
+        >
+          <Accordion.Panel
+            header={
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ color: '#1296db', fontSize: '14px', textAlign: 'left' }}>
+                  已报名志愿者
+                </div>
+                <div
+                  style={{ opacity: 0.6, fontSize: '14px', textAlign: 'left', marginRight: '5px' }}
+                >
+                  {data.volunteers.length}/{data.maxParticipants}
+                </div>
+              </div>
+            }
           >
             <List className="my-list">
               {data.volunteers.map(volunteer => (
-                <List.Item>{volunteer}</List.Item>
+                <VolunteerComponent
+                  volunteer={volunteer}
+                  finished={data.confirmedVolunteers.indexOf(volunteer) !== -1}
+                  projectId={id}
+                />
               ))}
             </List>
           </Accordion.Panel>
+        </Accordion>
+        <Accordion
+          style={{ marginTop: '10px' }}
+          defaultActiveKey="0"
+          className="my-accordion"
+          onChange={onChange}
+        >
           <Accordion.Panel
-            header={`完成任务的志愿者(${data.confirmedVolunteers.length})`}
+            header={
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ color: '#1296db', fontSize: '14px', textAlign: 'left' }}>
+                  完成任务的志愿者
+                </div>
+                <div
+                  style={{ opacity: 0.6, fontSize: '14px', textAlign: 'left', marginRight: '5px' }}
+                >
+                  {data.confirmedVolunteers.length}/{data.volunteers.length}
+                </div>
+              </div>
+            }
             className="pad"
           >
             <List className="my-list">
@@ -180,15 +250,26 @@ export default (props: Props) => {
             </List>
           </Accordion.Panel>
         </Accordion>
-        <Button type="primary"  style={{position:'fixed'}} className={buttonStyle}>我要报名</Button>
+      </div>
+      <Button
+        type="primary"
+        style={{ position: 'fixed' }}
+        className={buttonStyle}
+        disabled={disabled}
+        onClick={apply}
+      >
+        {info}
+      </Button>
     </div>
   )
 }
 
-const buttonStyle = css`&&{
-  bottom:0;
-  z-index:1011;
-  font-size:14px;
-  width:100%;
-  color:#fff;
-}`
+const buttonStyle = css`
+  && {
+    bottom: 0;
+    z-index: 1011;
+    font-size: 14px;
+    width: 100%;
+    color: #fff;
+  }
+`

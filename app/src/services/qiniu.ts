@@ -4,7 +4,7 @@ import { POST } from '../utils/fetch'
 export async function uploadImage(files: any) {
   const file = files[0].file
   // tslint:disable-next-line:max-line-length
-  const token = '9v6-757_VQ0n1SGjF-PIUVkRwpQNI0fb5y65eP3x:T8hThNI_NxgKRyRCQ1yE0UcCtG0=:eyJzY29wZSI6InZvbHVudGVlcngiLCJkZWFkbGluZSI6MTU0MzYyMTg4OX0='
+  const token = '9v6-757_VQ0n1SGjF-PIUVkRwpQNI0fb5y65eP3x:MiB7dUAaE86D7cwhIpW_IFrsXAM=:eyJzY29wZSI6InZvbHVudGVlcngiLCJkZWFkbGluZSI6MTU0NDU1Mjg3M30='
   const headers = new Headers()
   headers.append('Authorization', `Uptoken ${token}`)
   const formdata = new FormData()
