@@ -48,13 +48,19 @@ async function applyForVolunteerWork(tx) {
     } = tx
 
     const volunteerWorkRegistry = await getAssetRegistry('org.volunteerx.network.VolunteerWork')
-
+    const volunteerRegistry = await getParticipantRegistry('org.volunteerx.network.Volunteer')
     const project = await volunteerWorkRegistry.get(projectId)
+    const volunteer = await volunteerRegistry.get(volunteerId)
 
     project.volunteers.push(volunteerId)
     project.unConfirmedVolunteers.push(volunteerId)
 
-    return await volunteerWorkRegistry.update(project)
+    volunteer.unFinishedVolunteerWorks.push(projectId)
+
+    await volunteerWorkRegistry.update(project)
+    await volunteerRegistry.update(volunteer)
+    
+    return null
 }
 
 /**
