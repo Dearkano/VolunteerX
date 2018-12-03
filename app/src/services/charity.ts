@@ -25,9 +25,9 @@ export const getCharityWorks = () => GET('CharityWork')
 
 export const getCharityWork = (id: string) => GET(`CharityWork/${id}`)
 
-export function vote(id: string, balance: number) {
-  const myId = container.state.myInfo ? container.state.myInfo.id : ''
-
+export function voteAction(id: string, balance: number) {
+  //const myId = container.state.myInfo ? container.state.myInfo.id : ''
+  const myId = 'zyzwf'
   return POST('vote', {
     params: {
       balance,

@@ -24,3 +24,10 @@ export function issueVolunteerWorks(value: IVolunteerWorks) {
 export const getVolunteerWorks = () => GET('VolunteerWork')
 
 export const getVolunteerWork = (id: string) => GET(`VolunteerWork/${id}`)
+
+export const applyForVolunteerWork = (id:string) => POST('applyForVolunteerWork',{
+  params:{
+    volunteerId:'zyzwf',
+    projectId:id
+  }
+})

@@ -24,5 +24,7 @@ declare module '@volunteerx' {
     status: string
     // 活动图片
     imageUrl:string
+    // 类型
+    type: string
   }
 }

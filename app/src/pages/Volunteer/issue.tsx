@@ -51,6 +51,12 @@ export default createForm()((props: Props) => {
       >标题
       </InputItem>
       <InputItem
+        {...getFieldProps('type')}
+        placeholder="请输入类型"
+        clear
+      >类型
+      </InputItem>
+      <InputItem
         {...getFieldProps('award')}
         placeholder="请输入奖励金额"
         type="number"
