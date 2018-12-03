@@ -59,7 +59,7 @@ async function applyForVolunteerWork(tx) {
 
     await volunteerWorkRegistry.update(project)
     await volunteerRegistry.update(volunteer)
-    
+
     return null
 }
 
@@ -81,7 +81,7 @@ async function authorizeToken(tx) {
     const volunteer = await volunteerRegistry.get(volunteerId)
     const project = await volunteerWorkRegistry.get(projectId)
 
-    if (commonwealId !== project.issuer.id) {
+    if (commonwealId !== project.issuer) {
         return null
     }
 
